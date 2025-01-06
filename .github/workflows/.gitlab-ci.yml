@@ -1,0 +1,17 @@
+stages:
+  - build
+
+variables:
+  BUILD_DIR: build
+
+build-job:
+  stage: build
+  image: gcc:latest # Используем образ Docker с установленным GCC
+  script:
+    - mkdir -p $BUILD_DIR
+    - cd $BUILD_DIR
+    - cmake ..
+    - make
+  artifacts:
+    paths:
+      - $BUILD_DIR # Сохраняем результат сборки
