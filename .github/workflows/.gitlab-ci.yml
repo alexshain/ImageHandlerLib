@@ -1,17 +1,33 @@
-stages:
-  - build
+name: Build
 
-variables:
-  BUILD_DIR: build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-build-job:
-  stage: build
-  image: gcc:latest # Используем образ Docker с установленным GCC
-  script:
-    - mkdir -p $BUILD_DIR
-    - cd $BUILD_DIR
-    - cmake ..
-    - make
-  artifacts:
-    paths:
-      - $BUILD_DIR # Сохраняем результат сборки
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y cmake gcc libcunit1 libcunit1-dev
+
+    - name: Configure CMake
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+
+    - name: Build project
+      run: |
+        cd build
+        cmake --build .
