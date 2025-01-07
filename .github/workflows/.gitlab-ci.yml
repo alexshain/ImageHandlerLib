@@ -23,11 +23,11 @@ jobs:
 
     - name: Configure CMake
       run: |
-        mkdir -p build
-        cd build
+        mkdir -p cpp/build
+        cd cpp/build
         cmake ..
 
     - name: Build project
       run: |
-        cd build
+        cd cpp/build
         cmake --build .
